@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -6,6 +7,24 @@ const app = express();
 app.set('view engine','ejs');
 
 app.listen(3000);
+
+//creating custom middleware to log request data
+// app.use((req,res, next)=>{
+//     console.log('new request was made');
+//     console.log('host: ',req.hostname);
+//     console.log('path: ',req.path);
+//     console.log('method: ',req.method);
+//     next();
+// });
+
+//using static middleware to give access to static files
+ app.use(express.static('public'))
+
+
+//using morgan middleware
+app.use(morgan('dev'));
+//app.use(morgan('tiny'));
+
 
 //passing data from our handler to our view
 app.get('/',(req,res)=>{
@@ -16,6 +35,7 @@ app.get('/',(req,res)=>{
     ]
     res.render('index',{title:'Home',blogs:blogs});
 });
+
 
 app.get('/about',(req,res)=>{
     res.render('about',{title:'About'});
